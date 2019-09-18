@@ -1,0 +1,50 @@
+package hdfs;
+
+
+import java.util.Properties;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.junit.Test;
+
+public class test_hdfs_mkdir {
+	Properties properties = null;
+	Configuration conf = null;
+	FileSystem fs = null;
+	@Test
+	public  void mkdir() throws Exception {
+		 properties= System.getProperties();
+	   properties.setProperty("HADOOP_USER_NAME", "hadoop");
+	   conf= new Configuration();
+		 
+		 conf.set("fs.defaultFS", "hdfs://hadoop111:9000");
+		 fs = FileSystem.get(conf);
+		 System.out.println(fs.mkdirs(new Path("/ljl3"))); 
+		 fs.close();
+	}
+	@Test
+	public void copyFromLocal() throws Exception {
+		 properties = System.getProperties();
+	   properties.setProperty("HADOOP_USER_NAME", "hadoop");
+		 conf = new Configuration();
+		 conf.set("fs.defaultFS", "hdfs://hadoop111:9000");
+     
+		 fs= FileSystem.get(conf);
+		 Path src = new Path("f:/mysql-connector-java-5.1.40-bin.jar");
+		 Path dst = new Path("/");
+		 fs.copyFromLocalFile(src, dst);
+		 fs.close();
+	}
+	@Test
+	public void copyToLocal() throws Exception {
+		properties = System.getProperties();
+		properties.setProperty("HADOOP_USER_NAME", "hadoop");
+		conf = new Configuration();
+		conf.set("fs.defaultFS", "hdfs://hadoop111:9000");
+    
+		fs = FileSystem.get(conf);
+		fs.copyToLocalFile(false, new Path("/hadoop-2.7.7-centos-6.7.tar.gz"), new Path("E:\\"),true);
+		fs.close();
+	}
+}
